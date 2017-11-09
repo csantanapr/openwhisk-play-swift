@@ -28,12 +28,16 @@ let package = Package(
       )
     ],
     dependencies: [
-      .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .upToNextMinor(from: "0.0.14"))
+      .package(url: "https://github.com/IBM-Swift/KituraContracts.git", .upToNextMinor(from: "0.0.14")),
+      .package(url: "https://github.com/IBM-Swift/Kitura-net.git", .upToNextMajor(from: "1.7.19")),
+      .package(url: "https://github.com/IBM-Swift/SwiftyJSON.git", .upToNextMajor(from: "17.0.0"))
     ],
     targets: [
       .target(
         name: "Action",
-        dependencies: ["KituraContracts"]
+        dependencies: ["KituraContracts",
+                       "KituraNet",
+                       "SwiftyJSON"]
       )
     ]
 )
