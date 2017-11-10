@@ -16,7 +16,6 @@
  */
 
 import Foundation
-import KituraNet
 import Dispatch
 
 class Whisk {
@@ -58,7 +57,12 @@ class Whisk {
         
         invokeGroup.enter()
         queue.async {
+            /*
             sendWhiskRequest(uriPath: path, params: params, method: method, group: invokeGroup) { result in
+                response = result
+            }
+           */
+            postUrlSession(uriPath: path, params: params, method: method, group: invokeGroup) { result in
                 response = result
             }
         }
@@ -121,7 +125,8 @@ class Whisk {
         
         return (httpType, host, port, authKey)
     }
-    
+  
+    /*
     // actually do the call to the specified OpenWhisk URI path
     private class func sendWhiskRequest(uriPath: String, params : [String:Any], method: String, group: DispatchGroup, callback : @escaping([String:Any]) -> Void) {
         let communicationDetails = initializeCommunication()
@@ -195,11 +200,11 @@ class Whisk {
         }
         
     }
-    
+  */
     /**
      * This function is currently unused but ready when we want to switch to using URLSession instead of KituraNet.
      */
-    private class func postUrlSession(uriPath: String, params : [String:Any], group: DispatchGroup, callback : @escaping([String:Any]) -> Void) {
+    private class func postUrlSession(uriPath: String, params : [String:Any], method: String,group: DispatchGroup, callback : @escaping([String:Any]) -> Void) {
         let communicationDetails = initializeCommunication()
         
         guard let encodedPath = uriPath.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) else {
@@ -211,7 +216,7 @@ class Whisk {
         
         if let url = URL(string: urlStr) {
             var request = URLRequest(url: url)
-            request.httpMethod = "POST"
+            request.httpMethod = method
             
             do {
                 request.addValue("application/json", forHTTPHeaderField: "Content-Type")
